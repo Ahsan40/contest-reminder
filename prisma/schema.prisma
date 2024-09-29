@@ -1,0 +1,50 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ContestPreferences {
+  id          Int      @id
+  contestUpdateInterval Int
+  lastContestUpdateTime DateTime
+}
+
+model Contest {
+  id                  Int      @id
+  name                String
+  type                String
+  phase               String
+  frozen              Boolean
+  durationSeconds     Int
+  startTimeSeconds    Int
+  relativeTimeSeconds Int
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String    @unique
+  password    String
+  role        Role      @default(USER)
+  registered  DateTime  @default(now())
+  statusId    Int
+
+  status      Status    @relation(fields: [statusId], references: [id])  // Relation to Status model
+}
+
+model Status {
+  id    Int    @id @default(autoincrement())
+  code  String
+  name  String
+
+  users User[]                              // One-to-many relation with User model
+}
+
+enum Role {
+  USER
+  ADMIN
+}
