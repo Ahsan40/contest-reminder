@@ -6,7 +6,7 @@ import type { APIRoute } from "astro";
 // Initialize Prisma Client
 const prisma = new PrismaClient();
 
-export const POST: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params, request }) => {
   try {
     // Fetch the data from Codeforces API
     const response = await fetch(
